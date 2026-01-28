@@ -21,4 +21,5 @@ COPY . .
 EXPOSE 8000
 
 # 7. THE CRITICAL LINE: Make sure 'app.py' matches your filename exactly
-CMD ["streamlit", "run", "app.py", "--server.port", "8000", "--server.address", "0.0.0.0"]
+CMD ["streamlit", "run", "sales_forecast_app.py", "--server.port", "8000", "--server.address", "0.0.0.0"]
+
