@@ -1,24 +1,24 @@
-# 1. Use a lightweight Python image
+# 1. Use a standard Python image
 FROM python:3.9-slim
 
-# 2. Set the working directory inside the container
+# 2. Set the folder inside the cloud
 WORKDIR /app
 
-# 3. Install system dependencies for PostgreSQL (psycopg2)
+# 3. Install system tools needed for PostgreSQL
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# 4. Copy and install Python libraries
+# 4. Copy your requirements and install them
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy your code AND the large .pkl files into the container
+# 5. Copy EVERY file from your GitHub into the cloud folder
 COPY . .
 
-# 6. Tell Render which port your app uses (usually 8000 or 5000)
+# 6. Streamlit needs this port to talk to Render
 EXPOSE 8000
 
-# 7. Start the app (adjust 'app:app' if your file is named differently)
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
+# 7. THE CRITICAL LINE: Make sure 'app.py' matches your filename exactly
+CMD ["streamlit", "run", "app.py", "--server.port", "8000", "--server.address", "0.0.0.0"]
