@@ -1,8 +1,8 @@
+scikit-learn==1.4.2  # Use YOUR version here
+numpy==1.26.4
+joblib
 streamlit
 pandas
-numpy==1.26.4
-scikit-learn==1.4.2
-joblib
 sqlalchemy
 psycopg2-binary
 plotly
