@@ -7,7 +7,8 @@ import os
 import streamlit as st
 
 # DEBUG: This will show in your app if the variable is found
-db_check = os.getenv("")
+db_check = os.getenv("postgresql://inventory_drift_db_user:Xf9BpwHH8zNTqmjap0W1bCLXKd3kUzni@dpg-d5uarfiqcgvc73asnf80-a.singapore-postgres.render.com/inventory_drift_db")
+
 if db_check:
     st.write(f"✅ System found a database URL starting with: {db_check[:15]}...")
 else:
@@ -49,3 +50,4 @@ if submitted:
     else:
 
         st.success(f"System Stable for {product} in {season}.")
+
