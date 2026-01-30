@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv() 
 import streamlit as st
 import os
 from universal_engine import train_universal_model, predict_and_log
@@ -43,3 +45,4 @@ if st.button("Run AI Analysis"):
             
     except Exception as e:
         st.error(f"Database Error: {e}")
+
