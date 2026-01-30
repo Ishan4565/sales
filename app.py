@@ -3,6 +3,15 @@ import pandas as pd
 from universal_engine import train_universal_model, predict_and_log
 
 st.set_page_config(page_title="Seasonal Inventory AI", layout="wide")
+import os
+import streamlit as st
+
+# DEBUG: This will show in your app if the variable is found
+db_check = os.getenv("")
+if db_check:
+    st.write(f"✅ System found a database URL starting with: {db_check[:15]}...")
+else:
+    st.error("❌ System still thinks DATABASE_URL is empty. Check Render Settings!")
 
 st.title("🧥 Global Inventory & Drift Monitor")
 st.markdown("Enter product details to calculate real-time demand drift.")
@@ -38,4 +47,5 @@ if submitted:
     if drift > 0.2:
         st.error(f"High Drift Detected! {product} is disconnected from {season} logic.")
     else:
+
         st.success(f"System Stable for {product} in {season}.")
