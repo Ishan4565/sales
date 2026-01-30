@@ -1,3 +1,4 @@
+st.write(os.environ.keys())
 import streamlit as st
 import pandas as pd
 from universal_engine import train_universal_model, predict_and_log
@@ -50,4 +51,5 @@ if submitted:
     else:
 
         st.success(f"System Stable for {product} in {season}.")
+
 
