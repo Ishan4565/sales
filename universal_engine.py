@@ -3,15 +3,20 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sklearn.ensemble import GradientBoostingRegressor
 
+# Simple engine factory
 def get_db_engine():
+    # Use the variable you added to Render settings
     db_url = os.getenv("postgresql://inventory_drift_db_user:Xf9BpwHH8zNTqmjap0W1bCLXKd3kUzni@dpg-d5uarfiqcgvc73asnf80-a/inventory_drift_db")
+    
     if db_url:
         if db_url.startswith("postgres://"):
             db_url = db_url.replace("postgres://", "postgresql://", 1)
         return create_engine(db_url)
+    
+    # Only for local testing
     return create_engine('postgresql://postgres:1234@localhost:5432/postgres')
 
-def train_universal_model():  # <--- MAKE SURE THIS NAME MATCHES APP.PY
+def train_universal_model():
     data = pd.DataFrame({
         'season_index': [1, 2, 3, 4, 1, 2, 3, 4],
         'temp': [15, 30, 10, -5, 18, 35, 8, -10],
@@ -32,7 +37,7 @@ def predict_and_log(product, season_name, temp, promo, past, actual_sales, model
     
     prediction = model.predict(input_data)[0]
     drift = abs(prediction - actual_sales) / (prediction + 1e-9)
-    status = "Critical Drift" if drift > 0.2 else "Stable"
+    status = "Critical" if drift > 0.2 else "Stable"
     
     engine = get_db_engine()
     result = pd.DataFrame([{
