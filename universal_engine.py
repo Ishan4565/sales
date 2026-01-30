@@ -3,12 +3,17 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor
 from sqlalchemy import create_engine
 import os
+from sqlalchemy import create_engine
 
-# Use the environment variable set in Render/Hugging Face
+# 1. Get the URL from the cloud environment
 db_url = os.getenv("postgresql://inventory_drift_db_user:Xf9BpwHH8zNTqmjap0W1bCLXKd3kUzni@dpg-d5uarfiqcgvc73asnf80-a.singapore-postgres.render.com/inventory_drift_db")
 
-# Fallback for local testing if the environment variable isn't found
-if db_url is None:
+if db_url:
+    # 2. FIX: Render provides 'postgres://', but SQLAlchemy needs 'postgresql://'
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+else:
+    # 3. Fallback for your local machine ONLY
     db_url = 'postgresql://postgres:1234@localhost:5432/postgres'
 
 engine = create_engine(db_url)
@@ -49,4 +54,5 @@ def predict_and_log(product, season_name, temp, promo, past, actual_sales, model
     }])
     
     result.to_sql('inventory_monitor', engine, if_exists='append', index=False)
+
     return prediction, drift
